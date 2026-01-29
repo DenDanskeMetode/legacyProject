@@ -1,0 +1,15 @@
+# Use an official Python 2 runtime as a parent image
+FROM python:2.7-slim
+
+# Set the working directory in the container
+WORKDIR /app
+
+# Copy the current directory contents into the container at /app
+COPY . /app
+
+# Install any needed packages specified in requirements.txt
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Run your Python 2 script
+CMD ["python", "app.py"]
