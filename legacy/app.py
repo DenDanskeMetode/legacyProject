@@ -272,19 +272,19 @@ def recipe_detail(id):
     print('Route invoked: GET /recipes/<int:id>/')
     conn = get_db_connection()
     cursor = conn.cursor()
-    cursor.execute('SELECT id, title, time_minutes, price, link, description FROM recipes WHERE id = ' + str(id))
+    cursor.execute('SELECT id, title, time_minutes, price, link, description FROM recipes WHERE id = ?', (id,))
     recipe = cursor.fetchone()
 
     cursor.execute('''
         SELECT i.id, i.name, ri.amount, ri.unit FROM ingredients i
         JOIN recipe_ingredients ri ON i.id = ri.ingredient_id
-        WHERE ri.recipe_id = ''' + str(id))
+        WHERE ri.recipe_id = ?''', (id,))
     recipe_ingredients = cursor.fetchall()
 
     cursor.execute('''
         SELECT t.id, t.name FROM tags t
         JOIN recipe_tags rt ON t.id = rt.tag_id
-        WHERE rt.recipe_id = ''' + str(id))
+        WHERE rt.recipe_id = ?''', (id,))
     recipe_tags = cursor.fetchall()
 
     conn.close()
@@ -454,19 +454,19 @@ def recipe_recipes_retrieve(id):
     print('Route invoked: GET /api/recipe/recipes/<int:id>/')
     conn = get_db_connection()
     cursor = conn.cursor()
-    cursor.execute('SELECT id, title, time_minutes, price, link, description FROM recipes WHERE id = ' + str(id))
+    cursor.execute('SELECT id, title, time_minutes, price, link, description FROM recipes WHERE id = ?', (id,))
     recipe = cursor.fetchone()
 
     cursor.execute('''
         SELECT i.id, i.name, ri.amount, ri.unit FROM ingredients i
         JOIN recipe_ingredients ri ON i.id = ri.ingredient_id
-        WHERE ri.recipe_id = ''' + str(id))
+        WHERE ri.recipe_id = ?''', (id,))
     recipe_ingredients = cursor.fetchall()
 
     cursor.execute('''
         SELECT t.id, t.name FROM tags t
         JOIN recipe_tags rt ON t.id = rt.tag_id
-        WHERE rt.recipe_id = ''' + str(id))
+        WHERE rt.recipe_id = ?''', (id,))
     recipe_tags = cursor.fetchall()
 
     conn.close()

@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="316pt" height="260pt" viewBox="0.00 0.00 316.00 260.00">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 256)">
+<title>G</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-256 312.49,-256 312.49,4 -4,4"/>
+<!-- Python -->
+<g id="node1" class="node">
+<title>Python</title>
+<ellipse fill="none" stroke="black" cx="114.45" cy="-234" rx="38.4" ry="18"/>
+<text xml:space="preserve" text-anchor="middle" x="114.45" y="-229.8" font-family="Times,serif" font-size="14.00">Python</text>
+</g>
+<!-- Flask -->
+<g id="node2" class="node">
+<title>Flask</title>
+<ellipse fill="none" stroke="black" cx="67.45" cy="-162" rx="31.96" ry="18"/>
+<text xml:space="preserve" text-anchor="middle" x="67.45" y="-157.8" font-family="Times,serif" font-size="14.00">Flask</text>
+</g>
+<!-- Python&#45;&gt;Flask -->
+<g id="edge1" class="edge">
+<title>Python-&gt;Flask</title>
+<path fill="none" stroke="black" d="M103.31,-216.41C97.67,-208.01 90.7,-197.63 84.41,-188.26"/>
+<polygon fill="black" stroke="black" points="87.51,-186.6 79.03,-180.24 81.7,-190.5 87.51,-186.6"/>
+</g>
+<!-- SQLite3 -->
+<g id="node5" class="node">
+<title>SQLite3</title>
+<ellipse fill="none" stroke="black" cx="164.45" cy="-162" rx="43.76" ry="18"/>
+<text xml:space="preserve" text-anchor="middle" x="164.45" y="-157.8" font-family="Times,serif" font-size="14.00">SQLite3</text>
+</g>
+<!-- Python&#45;&gt;SQLite3 -->
+<g id="edge4" class="edge">
+<title>Python-&gt;SQLite3</title>
+<path fill="none" stroke="black" d="M126.3,-216.41C132.21,-208.13 139.5,-197.92 146.12,-188.66"/>
+<polygon fill="black" stroke="black" points="148.84,-190.87 151.8,-180.7 143.14,-186.8 148.84,-190.87"/>
+</g>
+<!-- requirements -->
+<g id="node3" class="node">
+<title>requirements</title>
+<ellipse fill="none" stroke="black" cx="61.45" cy="-90" rx="61.45" ry="18"/>
+<text xml:space="preserve" text-anchor="middle" x="61.45" y="-85.8" font-family="Times,serif" font-size="14.00">requirements</text>
+</g>
+<!-- Flask&#45;&gt;requirements -->
+<g id="edge2" class="edge">
+<title>Flask-&gt;requirements</title>
+<path fill="none" stroke="black" d="M65.96,-143.7C65.34,-136.41 64.6,-127.73 63.89,-119.54"/>
+<polygon fill="black" stroke="black" points="67.38,-119.28 63.04,-109.61 60.41,-119.87 67.38,-119.28"/>
+</g>
+<!-- app -->
+<g id="node4" class="node">
+<title>app</title>
+<ellipse fill="none" stroke="black" cx="167.45" cy="-18" rx="27" ry="18"/>
+<text xml:space="preserve" text-anchor="middle" x="167.45" y="-13.8" font-family="Times,serif" font-size="14.00">app</text>
+</g>
+<!-- requirements&#45;&gt;app -->
+<g id="edge3" class="edge">
+<title>requirements-&gt;app</title>
+<path fill="none" stroke="black" d="M85.5,-73.12C101.53,-62.53 122.67,-48.57 139.45,-37.49"/>
+<polygon fill="black" stroke="black" points="141.09,-40.6 147.5,-32.17 137.23,-34.76 141.09,-40.6"/>
+</g>
+<!-- db -->
+<g id="node6" class="node">
+<title>db</title>
+<ellipse fill="none" stroke="black" cx="167.45" cy="-90" rx="27" ry="18"/>
+<text xml:space="preserve" text-anchor="middle" x="167.45" y="-85.8" font-family="Times,serif" font-size="14.00">db</text>
+</g>
+<!-- SQLite3&#45;&gt;db -->
+<g id="edge5" class="edge">
+<title>SQLite3-&gt;db</title>
+<path fill="none" stroke="black" d="M165.19,-143.7C165.5,-136.41 165.87,-127.73 166.22,-119.54"/>
+<polygon fill="black" stroke="black" points="169.72,-119.76 166.65,-109.62 162.72,-119.46 169.72,-119.76"/>
+</g>
+<!-- db&#45;&gt;app -->
+<g id="edge6" class="edge">
+<title>db-&gt;app</title>
+<path fill="none" stroke="black" d="M167.45,-71.7C167.45,-64.41 167.45,-55.73 167.45,-47.54"/>
+<polygon fill="black" stroke="black" points="170.95,-47.62 167.45,-37.62 163.95,-47.62 170.95,-47.62"/>
+</g>
+<!-- templates -->
+<g id="node7" class="node">
+<title>templates</title>
+<ellipse fill="none" stroke="black" cx="260.45" cy="-90" rx="48.04" ry="18"/>
+<text xml:space="preserve" text-anchor="middle" x="260.45" y="-85.8" font-family="Times,serif" font-size="14.00">templates</text>
+</g>
+<!-- templates&#45;&gt;app -->
+<g id="edge7" class="edge">
+<title>templates-&gt;app</title>
+<path fill="none" stroke="black" d="M239.81,-73.46C226.29,-63.29 208.49,-49.89 193.93,-38.93"/>
+<polygon fill="black" stroke="black" points="196.21,-36.27 186.12,-33.05 192,-41.86 196.21,-36.27"/>
+</g>
+</g>
+</svg>
