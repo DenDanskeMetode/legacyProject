@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
@@ -15,6 +16,9 @@ func main() {
 func testFunc(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case "GET":
-		fmt.Println("Hello World!")
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusOK)
+		response := map[string]string{"message": "hello there"}
+		json.NewEncoder(w).Encode(response)
 	}
 }
