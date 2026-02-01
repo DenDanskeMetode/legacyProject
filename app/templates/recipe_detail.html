@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{{.Title}} - Recipe Cookbook</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <table width="100%" border="0" cellpadding="0" cellspacing="0">
+        <tr>
+            <td>
+                <center>
+                    <table width="800" border="3" cellpadding="10" cellspacing="0" bgcolor="#FFCC00">
+                        <tr>
+                            <td>
+                                <center>
+                                    <h1>
+                                        <font face="Comic Sans MS, Arial" color="#FF0066">
+                                            🍳 AWESOME RECIPE COOKBOOK 🍳
+                                        </font>
+                                    </h1>
+                                </center>
+                            </td>
+                        </tr>
+                    </table>
+
+                    <table width="800" border="2" cellpadding="5" cellspacing="0" bgcolor="#00CCFF">
+                        <tr>
+                            <td align="center">
+                                <a href="/">
+                                    <font face="Arial" color="#FFFFFF" size="4">
+                                        <b>🏠 HOME</b>
+                                    </font>
+                                </a>
+                            </td>
+                        </tr>
+                    </table>
+
+                    <table width="800" border="2" cellpadding="20" cellspacing="0" bgcolor="#FFFFFF">
+                        <tr>
+                            <td>
+                                <center>
+                                    <h2>
+                                        <font face="Comic Sans MS" color="#FF0066">
+                                            🍽️ {{.Title}} 🍽️
+                                        </font>
+                                    </h2>
+                                </center>
+
+                                <table width="100%" border="3" cellpadding="15" cellspacing="0" bgcolor="#CCFFCC">
+                                    <tr>
+                                        <td>
+                                            <font face="Arial" size="3" color="#000000">
+                                                ⏰ <b>Cooking Time:</b> {{.TimeMinutes}} minutes<br>
+                                                💰 <b>Estimated Price:</b> ${{.Price}}<br>
+                                                {{if .Link}}
+                                                🔗 <b>Link:</b> <a href="{{.Link}}">{{.Link}}</a><br>
+                                                {{end}}
+                                                🏷️ <b>Tags:</b>
+                                                {{range $index, $tag := .Tags}}
+                                                    <font color="#FF0066"><b>{{$tag.Name}}</b></font>{{if not (eq (add $index 1) (len $.Tags))}}, {{end}}
+                                                {{end}}
+                                            </font>
+                                        </td>
+                                    </tr>
+                                </table>
+
+                                <br>
+
+                                <table width="100%" border="3" cellpadding="15" cellspacing="0" bgcolor="#FFCCFF">
+                                    <tr>
+                                        <td>
+                                            <center>
+                                                <font face="Comic Sans MS" size="4" color="#0000FF">
+                                                    <b>🥕 INGREDIENTS 🥕</b>
+                                                </font>
+                                            </center>
+                                            <br>
+                                            <font face="Arial" size="3" color="#000000">
+                                                <ul>
+                                                    {{range .Ingredients}}
+                                                    <li>
+                                                        <b>{{.Amount}} {{.Unit}}</b> - {{.Name}}
+                                                    </li>
+                                                    {{end}}
+                                                </ul>
+                                            </font>
+                                        </td>
+                                    </tr>
+                                </table>
+
+                                <br>
+
+                                <table width="100%" border="3" cellpadding="15" cellspacing="0" bgcolor="#CCFFFF">
+                                    <tr>
+                                        <td>
+                                            <center>
+                                                <font face="Comic Sans MS" size="4" color="#0000FF">
+                                                    <b>👨‍🍳 COOKING INSTRUCTIONS 👨‍🍳</b>
+                                                </font>
+                                            </center>
+                                            <br>
+                                            <font face="Arial" size="3" color="#000000">
+                                                {{if .Description}}
+                                                    {{range $step := split .Description "\n\n"}}
+                                                        {{if $step}}
+                                                        <p style="line-height: 1.6;">
+                                                            <b>{{$step}}</b>
+                                                        </p>
+                                                        {{end}}
+                                                    {{end}}
+                                                {{else}}
+                                                    <p>No instructions available.</p>
+                                                {{end}}
+                                            </font>
+                                        </td>
+                                    </tr>
+                                </table>
+
+                                <br>
+
+                                <center>
+                                    <a href="/">
+                                        <table border="3" cellpadding="10" bgcolor="#00FF00">
+                                            <tr>
+                                                <td>
+                                                    <font face="Arial" size="4" color="#000000">
+                                                        <b>⬅️ BACK TO HOME</b>
+                                                    </font>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </a>
+                                </center>
+                            </td>
+                        </tr>
+                    </table>
+
+                    <table width="800" border="2" cellpadding="10" cellspacing="0" bgcolor="#00FF00">
+                        <tr>
+                            <td align="center">
+                                <font face="Arial" size="2" color="#000000">
+                                    <marquee>✨ Welcome to the best recipe site on the World Wide Web! ✨</marquee>
+                                </font>
+                            </td>
+                        </tr>
+                    </table>
+                </center>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
