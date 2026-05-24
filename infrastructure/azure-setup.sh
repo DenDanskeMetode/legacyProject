@@ -190,11 +190,23 @@ echo "Acquiring GHCR Token"
 echo "=========================================="
 if command -v gh &> /dev/null && gh auth status &> /dev/null 2>&1; then
     GHCR_TOKEN=$(gh auth token)
-    echo -e "${GREEN}✅ GHCR token acquired from GitHub CLI${NC}"
+    if [ -n "$GHCR_TOKEN" ]; then
+        echo -e "${GREEN}✅ GHCR token acquired from GitHub CLI${NC}"
+    else
+        echo -e "${YELLOW}⚠️  GitHub CLI is authenticated but could not retrieve a token.${NC}"
+        read -s -p "Enter a GitHub PAT with read:packages scope: " GHCR_TOKEN
+        echo
+    fi
 else
     echo -e "${YELLOW}⚠️  GitHub CLI not available or not authenticated${NC}"
     read -s -p "Enter a GitHub PAT with read:packages scope: " GHCR_TOKEN
     echo
+fi
+
+if [ -z "$GHCR_TOKEN" ]; then
+    echo -e "${RED}❌ GHCR token is required to authenticate docker pulls from ghcr.io.${NC}"
+    echo "Please rerun the script with a valid GitHub PAT with read:packages scope."
+    exit 1
 fi
 
 echo ""
