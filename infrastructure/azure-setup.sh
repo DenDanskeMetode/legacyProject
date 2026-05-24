@@ -1031,6 +1031,14 @@ while [ $ATTEMPT -lt $MAX_ATTEMPTS ]; do
 done
 if [ $ATTEMPT -eq $MAX_ATTEMPTS ]; then
     echo -e "${RED}❌ Go app did not become ready after $((MAX_ATTEMPTS * 10))s${NC}"
+    echo "Fetching app container logs for diagnosis..."
+    ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ConnectTimeout=30 -i "$SSH_KEY" \
+        -o "ProxyCommand=ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ConnectTimeout=30 -i '$SSH_KEY' -W %h:%p $ADMIN_USERNAME@$NGINX_PUBLIC_IP" \
+        "$ADMIN_USERNAME@$APP_PRIVATE_IP" << ENDSSH
+set -e
+cd $REMOTE_APP_DIR/app
+sudo docker compose logs --no-color --tail 100
+ENDSSH
     exit 1
 fi
 
