@@ -421,6 +421,26 @@ az vm open-port \
 
 echo -e "${GREEN}✅ nginx VM ports configured${NC}"
 
+# Ensure each VM NIC has an associated NSG before adding rules.
+ensure_nsg_on_nic() {
+    local nic_id="$1"
+    local vm_name="$2"
+    local nsg_id
+
+    nsg_id=$(az network nic show --ids "$nic_id" --query "networkSecurityGroup.id" --output tsv)
+    if [ -z "$nsg_id" ] || [ "$nsg_id" = "null" ]; then
+        local nsg_name="${vm_name}NSG"
+        if ! az network nsg show --resource-group "$RESOURCE_GROUP" --name "$nsg_name" &>/dev/null; then
+            az network nsg create --resource-group "$RESOURCE_GROUP" --name "$nsg_name" --output table
+            echo -e "${GREEN}✅ Created NSG $nsg_name${NC}"
+        fi
+        az network nic update --ids "$nic_id" --network-security-group "$nsg_name" --output none
+        nsg_id=$(az network nic show --ids "$nic_id" --query "networkSecurityGroup.id" --output tsv)
+    fi
+
+    basename "$nsg_id"
+}
+
 # Fetch app VM private IP now so it can be used as the source filter for the postgres NSG rule
 APP_PRIVATE_IP=$(az vm show \
     --resource-group "$RESOURCE_GROUP" \
@@ -438,9 +458,7 @@ APP_NIC_ID=$(az vm show \
     --query "networkProfile.networkInterfaces[0].id" \
     --output tsv)
 
-APP_NSG=$(az network nic show --ids "$APP_NIC_ID" \
-    --query "networkSecurityGroup.id" \
-    --output tsv | xargs basename)
+APP_NSG=$(ensure_nsg_on_nic "$APP_NIC_ID" "$APP_VM_NAME")
 
 if ! az network nsg rule show \
         --resource-group "$RESOURCE_GROUP" \
@@ -492,9 +510,7 @@ POSTGRES_NIC_ID=$(az vm show \
     --query "networkProfile.networkInterfaces[0].id" \
     --output tsv)
 
-POSTGRES_NSG=$(az network nic show --ids "$POSTGRES_NIC_ID" \
-    --query "networkSecurityGroup.id" \
-    --output tsv | xargs basename)
+POSTGRES_NSG=$(ensure_nsg_on_nic "$POSTGRES_NIC_ID" "$POSTGRES_VM_NAME")
 
 if ! az network nsg rule show \
         --resource-group "$RESOURCE_GROUP" \
@@ -546,9 +562,7 @@ NGINX_NIC_ID=$(az vm show \
     --query "networkProfile.networkInterfaces[0].id" \
     --output tsv)
 
-NGINX_NSG=$(az network nic show --ids "$NGINX_NIC_ID" \
-    --query "networkSecurityGroup.id" \
-    --output tsv | xargs basename)
+NGINX_NSG=$(ensure_nsg_on_nic "$NGINX_NIC_ID" "$NGINX_VM_NAME")
 
 if ! az network nsg rule show \
         --resource-group "$RESOURCE_GROUP" \
@@ -578,9 +592,7 @@ MONITORING_NIC_ID=$(az vm show \
     --query "networkProfile.networkInterfaces[0].id" \
     --output tsv)
 
-MONITORING_NSG=$(az network nic show --ids "$MONITORING_NIC_ID" \
-    --query "networkSecurityGroup.id" \
-    --output tsv | xargs basename)
+MONITORING_NSG=$(ensure_nsg_on_nic "$MONITORING_NIC_ID" "$MONITORING_VM_NAME")
 
 if ! az network nsg rule show \
         --resource-group "$RESOURCE_GROUP" \
