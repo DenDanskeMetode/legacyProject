@@ -189,7 +189,19 @@ fi
 
 if [ -z "$DB_PASSWORD" ]; then
     echo -e "${YELLOW}⚠️  DB_PASSWORD not provided via environment or GitHub secret.${NC}"
-    echo -e "    Generating a new database password for this deployment.${NC}"
+
+    # If a persistent Postgres volume already exists, generating a new password will break the database.
+    if ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ConnectTimeout=30 -i "${SSH_KEY_PATH%.pub}" \
+        -o "ProxyCommand=ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ConnectTimeout=30 -i '${SSH_KEY_PATH%.pub}' -W %h:%p $ADMIN_USERNAME@$NGINX_PUBLIC_IP" \
+        "$ADMIN_USERNAME@$POSTGRES_PRIVATE_IP" \
+        "sudo docker volume ls --format '{{.Name}}' | grep -q '_postgres_data$'"; then
+        echo -e "${RED}❌ Existing PostgreSQL data volume detected and DB_PASSWORD is missing.${NC}"
+        echo "To reuse the current DB data, set DB_PASSWORD in the environment or provide it via GitHub secret DB_PASSWORD."
+        echo "If you intentionally want a fresh database, delete the existing volume on the postgres VM and rerun."
+        exit 1
+    fi
+
+    echo -e "${YELLOW}⚠️  No existing Postgres volume found; generating a new database password for this deployment.${NC}"
     DB_PASSWORD=$(openssl rand -base64 32 | tr -dc 'a-zA-Z0-9' | head -c 32)
     echo -e "${GREEN}✅ Database credentials generated${NC}"
 fi
