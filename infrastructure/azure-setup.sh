@@ -172,10 +172,27 @@ echo -e "${GREEN}✅ openssl found${NC}"
 
 echo ""
 echo "=========================================="
-echo "Generating Database Credentials"
+echo "Resolving Database Password"
 echo "=========================================="
-DB_PASSWORD=$(openssl rand -base64 32 | tr -dc 'a-zA-Z0-9' | head -c 32)
-echo -e "${GREEN}✅ Database credentials generated (not shown)${NC}"
+if [ -n "$DB_PASSWORD" ]; then
+    echo -e "${GREEN}✅ Using DB_PASSWORD from environment${NC}"
+else
+    if command -v gh &> /dev/null && gh auth status &> /dev/null 2>&1; then
+        echo "Attempting to read DB_PASSWORD from GitHub secrets..."
+        if DB_PASSWORD=$(gh secret view DB_PASSWORD --repo "$GITHUB_REPO" 2>/dev/null); then
+            if [ -n "$DB_PASSWORD" ]; then
+                echo -e "${GREEN}✅ DB_PASSWORD loaded from GitHub secrets${NC}"
+            fi
+        fi
+    fi
+fi
+
+if [ -z "$DB_PASSWORD" ]; then
+    echo -e "${YELLOW}⚠️  DB_PASSWORD not provided via environment or GitHub secret.${NC}"
+    echo -e "    Generating a new database password for this deployment.${NC}"
+    DB_PASSWORD=$(openssl rand -base64 32 | tr -dc 'a-zA-Z0-9' | head -c 32)
+    echo -e "${GREEN}✅ Database credentials generated${NC}"
+fi
 
 echo ""
 echo "=========================================="
