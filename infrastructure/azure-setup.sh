@@ -177,18 +177,29 @@ echo "=========================================="
 if [ -n "$DB_PASSWORD" ]; then
     echo -e "${GREEN}✅ Using DB_PASSWORD from environment${NC}"
 else
-    if command -v gh &> /dev/null && gh auth status &> /dev/null 2>&1; then
-        echo "Attempting to read DB_PASSWORD from GitHub secrets..."
-        if DB_PASSWORD=$(gh secret view DB_PASSWORD --repo "$GITHUB_REPO" 2>/dev/null); then
-            if [ -n "$DB_PASSWORD" ]; then
-                echo -e "${GREEN}✅ DB_PASSWORD loaded from GitHub secrets${NC}"
+    if command -v gh &> /dev/null; then
+        if gh auth status &> /dev/null 2>&1; then
+            echo "Attempting to read DB_PASSWORD from GitHub secrets..."
+            if DB_PASSWORD=$(gh secret view DB_PASSWORD --repo "$GITHUB_REPO" 2>/dev/null); then
+                if [ -n "$DB_PASSWORD" ]; then
+                    echo -e "${GREEN}✅ DB_PASSWORD loaded from GitHub secrets${NC}"
+                fi
             fi
+        else
+            echo -e "${YELLOW}⚠️  GitHub CLI is installed but not authenticated. Skipping GitHub secret lookup.${NC}"
         fi
+    else
+        echo -e "${YELLOW}⚠️  GitHub CLI not installed. Skipping GitHub secret lookup.${NC}"
     fi
 fi
 
 if [ -z "$DB_PASSWORD" ]; then
-    echo -e "${YELLOW}⚠️  DB_PASSWORD not provided via environment or GitHub secret.${NC}"
+    read -s -p "Enter DB_PASSWORD (or export DB_PASSWORD before running): " DB_PASSWORD
+    echo
+fi
+
+if [ -z "$DB_PASSWORD" ]; then
+    echo -e "${YELLOW}⚠️  DB_PASSWORD still not provided.${NC}"
 
     # If a persistent Postgres volume already exists, generating a new password will break the database.
     if ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ConnectTimeout=30 -i "${SSH_KEY_PATH%.pub}" \
@@ -196,7 +207,7 @@ if [ -z "$DB_PASSWORD" ]; then
         "$ADMIN_USERNAME@$POSTGRES_PRIVATE_IP" \
         "sudo docker volume ls --format '{{.Name}}' | grep -q '_postgres_data$'"; then
         echo -e "${RED}❌ Existing PostgreSQL data volume detected and DB_PASSWORD is missing.${NC}"
-        echo "To reuse the current DB data, set DB_PASSWORD in the environment or provide it via GitHub secret DB_PASSWORD."
+        echo "To reuse the current DB data, set DB_PASSWORD in the environment, provide it via GitHub secret DB_PASSWORD, or enter it now."
         echo "If you intentionally want a fresh database, delete the existing volume on the postgres VM and rerun."
         exit 1
     fi
