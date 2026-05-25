@@ -8,7 +8,16 @@
 | Azure subscription | Quota for 1 Standard public IP | Azure for Students works |
 | `openssl` | Generate DB/Grafana passwords | Included on WSL/macOS/Linux |
 | SSH key at `~/.ssh/azure_key` | VM auth | Auto-generated if missing |
-| [GitHub CLI](https://cli.github.com/) (optional) | Set secrets automatically | `winget install GitHub.cli` then `gh auth login` |
+| [GitHub CLI](https://cli.github.com/) | Set secrets automatically | `winget install GitHub.cli` |
+
+Before running the script, log in to both CLIs:
+
+```bash
+az login
+gh auth login
+```
+
+> `gh auth login` must be completed before running `azure-setup.sh` — the script uses `gh secret set` to write GitHub Actions secrets and `gh auth token` to pull from GHCR.
 
 ## What `azure-setup.sh` does
 
