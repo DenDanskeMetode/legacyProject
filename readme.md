@@ -60,6 +60,9 @@ The application is deployed and running. Open the URL printed at the end of `azu
 | `openssl` | Pre-installed on macOS/Linux; included in Git Bash / WSL on Windows | — |
 | SSH key | Auto-generated at `~/.ssh/azure_key` if missing | — |
 
+> [!CAUTION]
+> `gh auth login` must be run **in the same shell you will use to run the script (WSL or Git Bash)** before executing `azure-setup.sh`. Logging in via PowerShell or another terminal does not carry over. See [infrastructure/README.md](infrastructure/README.md#prerequisites) for full details.
+
 **Steps:**
 
 ```bash

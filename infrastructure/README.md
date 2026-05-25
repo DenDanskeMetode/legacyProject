@@ -12,7 +12,17 @@
 | Azure subscription | Quota for 1 Standard public IP | Azure for Students works |
 | `openssl` | Generate DB/Grafana passwords | Pre-installed on macOS/Linux; included in Git Bash / WSL on Windows |
 | SSH key at `~/.ssh/azure_key` | VM auth | Auto-generated if missing |
-| [GitHub CLI](https://cli.github.com/) (optional) | Set secrets automatically | Windows: `winget install GitHub.cli`<br>macOS: `brew install gh`<br>Linux (Ubuntu/Debian): `sudo apt install gh`<br>Other Linux: [install guide](https://cli.github.com/)<br>Then run `gh auth login` |
+| [GitHub CLI](https://cli.github.com/) | Set secrets automatically | Windows: `winget install GitHub.cli`<br>macOS: `brew install gh`<br>Linux (Ubuntu/Debian): `sudo apt install gh`<br>Other Linux: [install guide](https://cli.github.com/) |
+
+Before running the script, log in to both CLIs:
+
+```bash
+az login
+gh auth login
+```
+
+> [!CAUTION]
+> **`gh auth login` is required — not optional, not skippable.** Installing GitHub CLI is not enough. You must run `gh auth login` and complete the authentication flow **in the same shell environment you will use to run the script (WSL or Git Bash) before** running `azure-setup.sh`. Logging in via PowerShell or another terminal does not carry over. The script calls `gh auth token` to pull images from GHCR and `gh secret set` to write GitHub Actions secrets — both fail silently or crash if you are not authenticated. If you are unsure whether you are logged in, run `gh auth status` in the same shell to confirm.
 
 ## What `azure-setup.sh` does
 
