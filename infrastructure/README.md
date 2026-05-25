@@ -22,7 +22,7 @@ gh auth login
 ```
 
 > [!CAUTION]
-> **`gh auth login` is required — not optional, not skippable.** Installing GitHub CLI is not enough. You must run `gh auth login` and complete the authentication flow **before** running `azure-setup.sh`. The script calls `gh auth token` to pull images from GHCR and `gh secret set` to write GitHub Actions secrets — both fail silently or crash if you are not authenticated. If you are unsure whether you are logged in, run `gh auth status` to confirm.
+> **`gh auth login` is required — not optional, not skippable.** Installing GitHub CLI is not enough. You must run `gh auth login` and complete the authentication flow **in the same shell environment you will use to run the script (WSL or Git Bash) before** running `azure-setup.sh`. Logging in via PowerShell or another terminal does not carry over. The script calls `gh auth token` to pull images from GHCR and `gh secret set` to write GitHub Actions secrets — both fail silently or crash if you are not authenticated. If you are unsure whether you are logged in, run `gh auth status` in the same shell to confirm.
 
 ## What `azure-setup.sh` does
 
