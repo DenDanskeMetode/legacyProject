@@ -55,13 +55,13 @@ The application is deployed and running. Open the URL printed at the end of `azu
 | Tool | Install | Auth |
 |---|---|---|
 | Azure CLI | Windows: `winget install Microsoft.AzureCLI`<br>macOS: `brew install azure-cli`<br>Linux (Ubuntu/Debian): `curl -sL https://aka.ms/InstallAzureCLIDeb &#124; sudo bash`<br>Other Linux: [install guide](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli-linux) | `az login` |
-| GitHub CLI | Windows: `winget install GitHub.cli`<br>macOS: `brew install gh`<br>Linux (Ubuntu/Debian): `sudo apt install gh`<br>Other Linux: [install guide](https://cli.github.com/) | `gh auth login` |
+| GitHub CLI | Windows: `winget install GitHub.cli`<br>macOS: `brew install gh`<br>Linux (Ubuntu/Debian): `sudo apt install gh`<br>Other Linux: [install guide](https://cli.github.com/) | `gh auth login --scopes read:packages` |
 | Azure subscription | Azure for Students works | quota for 4 × Standard_B1s VMs + 1 Standard public IP |
 | `openssl` | Pre-installed on macOS/Linux; included in Git Bash / WSL on Windows | — |
 | SSH key | Auto-generated at `~/.ssh/azure_key` if missing | — |
 
 > [!CAUTION]
-> `gh auth login` must be run **in the same shell you will use to run the script (WSL or Git Bash)** before executing `azure-setup.sh`. Logging in via PowerShell or another terminal does not carry over. See [infrastructure/README.md](infrastructure/README.md#prerequisites) for full details.
+> `gh auth login --scopes read:packages` must be run **in the same shell you will use to run the script (WSL or Git Bash)** before executing `azure-setup.sh`. The `read:packages` scope is required to pull images from GHCR — omitting it will cause the script to fail. Logging in via PowerShell or another terminal does not carry over. See [infrastructure/README.md](infrastructure/README.md#prerequisites) for full details.
 
 **Steps:**
 
