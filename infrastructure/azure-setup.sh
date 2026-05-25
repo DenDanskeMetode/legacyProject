@@ -39,7 +39,7 @@ while [[ $# -gt 0 ]]; do
 done
 
 # Configuration variables - CUSTOMIZE THESE
-RESOURCE_GROUP="recipe-cookbook-backup"
+RESOURCE_GROUP="recipe-cookbook"
 LOCATION=""  # Auto-detected from available European regions after login
 PREFERRED_REGIONS=(
     "norwayeast"

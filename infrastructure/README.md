@@ -28,7 +28,7 @@ gh auth login --scopes read:packages
 
 Run once to provision infrastructure and perform the initial container deployment. Subsequent deployments are handled by GitHub Actions on every push.
 
-1. Creates resource group `recipe-cookbook-backup` and a shared VNet (`10.0.0.0/16`) in `norwayeast`
+1. Creates resource group `recipe-cookbook` and a shared VNet (`10.0.0.0/16`) in `norwayeast`
 2. Provisions four VMs (all `Standard_B1s`, Ubuntu 22.04):
    - **nginx VM** — public IP, ports 22/80/443 open
    - **app VM** — no public IP, port 3000 reachable within VNet only
@@ -45,7 +45,7 @@ GitHub secrets written: `VM_USER`, `SSH_HOST_NGINX`, `SSH_HOST_NGINX_PRIVATE`, `
 
 ## What `azure-teardown.sh` does
 
-Deletes all resources in `recipe-cookbook-backup` in order: VMs → NICs → disks (background, `--no-wait`) → NSGs → VNet. Non-interactive — no confirmation prompt.
+Deletes all resources in `recipe-cookbook` in order: VMs → NICs → disks (background, `--no-wait`) → NSGs → VNet. Non-interactive — no confirmation prompt.
 
 ## Azure Region
 
