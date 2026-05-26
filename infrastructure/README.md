@@ -1,5 +1,6 @@
 # Infrastructure
 
+
 ![Azure Architecture](../docs/azure-architecture.png)
 
 ## Prerequisites
