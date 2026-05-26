@@ -6,7 +6,7 @@
 set -e  # Exit on any error
 
 # Configuration - MUST MATCH azure-setup.sh
-RESOURCE_GROUP="recipe-cookbook-backup"
+RESOURCE_GROUP="recipe-cookbook"
 NGINX_PUBLIC_IP_NAME="recipe-cookbook-nginx-public-ip"
 
 # Check if terminal supports ANSI colors
