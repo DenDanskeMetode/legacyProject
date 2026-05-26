@@ -73,7 +73,7 @@ DB_NAME="cookbook_db"
 DB_PASSWORD=""
 GHCR_TOKEN=""
 GIT_CLONE_URL=""
-GRAFANA_PASSWORD=""
+GRAFANA_PASSWORD="SuperGiraf"
 MONITORING_PRIVATE_IP=""
 
 GREEN='\033[0;32m'
@@ -179,10 +179,9 @@ echo -e "${GREEN}✅ Database credentials generated (not shown)${NC}"
 
 echo ""
 echo "=========================================="
-echo "Generating Grafana Admin Password"
+echo "Grafana Admin Password"
 echo "=========================================="
-GRAFANA_PASSWORD=$(openssl rand -base64 32 | tr -dc 'a-zA-Z0-9' | head -c 32)
-echo -e "${GREEN}✅ Grafana admin password generated (not shown)${NC}"
+echo -e "${GREEN}✅ Grafana admin password set to fixed value (SuperGiraf)${NC}"
 
 echo ""
 echo "=========================================="
@@ -1093,6 +1092,19 @@ echo "$GHCR_TOKEN" | sudo docker login ghcr.io -u github-token --password-stdin
 echo "Starting monitoring containers..."
 sudo docker compose up -d --force-recreate
 echo "Monitoring containers started."
+
+echo "Resetting Grafana admin password (idempotent — covers persisted grafana-storage volumes from prior runs)..."
+for i in 1 2 3 4 5 6 7 8 9 10; do
+    if sudo docker compose exec -T grafana grafana-cli admin reset-admin-password "$GRAFANA_PASSWORD" >/dev/null 2>&1; then
+        echo "Grafana admin password reset."
+        break
+    fi
+    if [ "\$i" -eq 10 ]; then
+        echo "WARNING: failed to reset Grafana admin password after 10 attempts."
+    else
+        sleep 3
+    fi
+done
 ENDSSH
 
 echo -e "${GREEN}✅ Monitoring deployed${NC}"
@@ -1168,7 +1180,7 @@ if ! command -v gh &> /dev/null; then
     echo "  DB_USER               = $DB_USER"
     echo "  DB_PASSWORD           = (generated randomly — re-run the script to provision new credentials)"
     echo "  DB_NAME               = $DB_NAME"
-    echo "  GRAFANA_PASSWORD      = (generated randomly — re-run the script to provision new credentials)"
+    echo "  GRAFANA_PASSWORD      = SuperGiraf  (fixed value, set in this script)"
     echo ""
 else
     if ! gh auth status &> /dev/null; then
