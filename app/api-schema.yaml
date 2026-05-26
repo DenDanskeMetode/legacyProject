@@ -8,8 +8,8 @@ info:
     Authentication endpoints exist but are currently mocked (no session/token enforcement).
 
 servers:
-  - url: http://localhost:3000
-    description: Local development server
+  - url: http://${NGINX_PUBLIC_IP}
+    description: Production server (rendered by CI from NGINX_PUBLIC_IP)
 
 tags:
   - name: web
