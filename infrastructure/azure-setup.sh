@@ -39,7 +39,7 @@ while [[ $# -gt 0 ]]; do
 done
 
 # Configuration variables - CUSTOMIZE THESE
-RESOURCE_GROUP="recipe-cookbook-backup"
+RESOURCE_GROUP="recipe-cookbook"
 LOCATION=""  # Auto-detected from available European regions after login
 PREFERRED_REGIONS=(
     "norwayeast"
@@ -57,7 +57,7 @@ NGINX_VM_NAME="recipe-cookbook-nginx-vm"
 APP_VM_NAME="recipe-cookbook-app-vm"
 POSTGRES_VM_NAME="recipe-cookbook-postgres-vm"
 MONITORING_VM_NAME="recipe-cookbook-monitoring-vm"
-VM_SIZE="Standard_B1s"  # Change to "Standard_B2s" for better performance
+VM_SIZE="Standard_B2als_v2"  # Change to "Standard_B2s" for better performance
 VM_IMAGE="Canonical:0001-com-ubuntu-server-jammy:22_04-lts:latest"
 ADMIN_USERNAME="azureuser"
 SSH_KEY_PATH="$HOME/.ssh/azure_key.pub"
