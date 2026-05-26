@@ -34,7 +34,7 @@ Run once to provision infrastructure and perform the initial container deploymen
    - **app VM** — no public IP, port 3000 reachable within VNet only
    - **postgres VM** — no public IP, port 5432 reachable from app VM only
    - **monitoring VM** — no public IP, ports 9090/3001 reachable within VNet only
-3. Generates random DB credentials and Grafana admin password
+3. Generates random DB credentials; sets Grafana admin password to a fixed value.
 4. Prompts for a GHCR token (or reads from `gh auth token`) and an optional GitHub PAT for cloning
 5. Installs Docker on all four VMs; installs node_exporter (port 9100) on nginx, app, and postgres VMs; clones the repo on all VMs
 6. Deploys PostgreSQL → waits for it to be ready → deploys the Go app → deploys nginx → deploys Prometheus + Grafana (with generated `prometheus.yml` scraping app and all node_exporter targets)
