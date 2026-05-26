@@ -36,6 +36,17 @@ jobs:
 
       # Build both images locally first so Trivy can scan them before anything is published
 
+      # api-schema.yaml ships with a ${NGINX_PUBLIC_IP} placeholder so the public
+      # server URL stays out of the repo. Render it before the docker build so
+      # the value gets baked into the image. The limited envsubst form is
+      # required — plain envsubst would also expand OpenAPI's $ref keyword.
+      - name: Render api-schema.yaml
+        env:
+          NGINX_PUBLIC_IP: ${{ secrets.SSH_HOST_NGINX }}
+        run: |
+          envsubst '${NGINX_PUBLIC_IP}' < app/api-schema.yaml > app/api-schema.rendered.yaml
+          mv app/api-schema.rendered.yaml app/api-schema.yaml
+
       - name: Build app image locally
         uses: docker/build-push-action@v6 # TODO: pin to commit SHA
         with:
