@@ -33,16 +33,18 @@ A Go rewrite of a legacy Python/Flask recipe cookbook application. The project s
 
 ### Option A — View the live app
 
-The application is deployed and running. Open the URL printed at the end of `azure-setup.sh`, or ask the repository owner for the current nginx public IP.
+The application is deployed and running at the static public IP below.
 
 | Endpoint | URL |
 |---|---|
-| Web UI | `http://<nginx-public-ip>/` |
-| REST API overview | `http://<nginx-public-ip>/api` |
-| Swagger UI | `http://<nginx-public-ip>/swagger` |
-| Grafana | `http://<nginx-public-ip>/grafana/` |
+| Web UI | `http://20.251.36.80/` |
+| REST API overview | `http://20.251.36.80/api` |
+| Swagger UI | `http://20.251.36.80/swagger` |
+| Grafana | `http://20.251.36.80/grafana/` |
 
-> The live IP is stored in the `SSH_HOST_NGINX` GitHub secret and changes if the infrastructure is torn down and rebuilt.
+> The public IP (`20.251.36.80`) is a static Azure resource in the `recipe-cookbook` resource group and is preserved across teardown and re-setup — as long as the same Azure account is used. If the infrastructure is migrated to a different account, the IP will change and this section should be updated.
+
+> **Note:** HTTPS (port 443) is not currently configured. All traffic runs over HTTP.
 
 ---
 
@@ -56,7 +58,7 @@ The application is deployed and running. Open the URL printed at the end of `azu
 |---|---|---|
 | Azure CLI | Windows: `winget install Microsoft.AzureCLI`<br>macOS: `brew install azure-cli`<br>Linux (Ubuntu/Debian): `curl -sL https://aka.ms/InstallAzureCLIDeb &#124; sudo bash`<br>Other Linux: [install guide](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli-linux) | `az login` |
 | GitHub CLI | Windows: `winget install GitHub.cli`<br>macOS: `brew install gh`<br>Linux (Ubuntu/Debian): `sudo apt install gh`<br>Other Linux: [install guide](https://cli.github.com/) | `gh auth login --scopes read:packages` |
-| Azure subscription | Azure for Students works | quota for 4 × Standard_B1s VMs + 1 Standard public IP |
+| Azure subscription | Azure for Students works | quota for 4 × Standard_B2als_v2 VMs + 1 Standard public IP |
 | `openssl` | Pre-installed on macOS/Linux; included in Git Bash / WSL on Windows | — |
 | SSH key | Auto-generated at `~/.ssh/azure_key` if missing | — |
 
@@ -99,7 +101,7 @@ bash infrastructure/azure-teardown.sh
 | Reverse proxy | Nginx |
 | Monitoring | Prometheus + Grafana |
 | Container registry | GHCR |
-| Cloud | Azure (4 × Standard_B1s VMs) |
+| Cloud | Azure (4 × Standard_B2als_v2 VMs) |
 
 Go with `net/http` was chosen over the legacy Python/Flask stack for its performance and simplicity — it is compiled, statically typed, and the standard library HTTP server requires no external framework dependencies.
 
@@ -111,8 +113,10 @@ The application is split across four Azure VMs in a shared VNet (`10.0.0.0/16`),
 
 ![Azure Architecture](docs/azure-architecture.png)
 
+- The nginx VM is the only entry point. Its public IP (`20.251.36.80`) is a static resource in the `recipe-cookbook` resource group and survives teardown/re-setup on the same Azure account.
 - The app VM and postgres VM are reachable only within the VNet — no public IP.
 - The monitoring VM is also private; Grafana is exposed through nginx at `/grafana/`.
+- Private IPs within the subnet are assigned dynamically by Azure and may change if a VM is recreated. The current values are stored in the GitHub Actions secrets (`SSH_HOST_APP`, `SSH_HOST_POSTGRES`, `SSH_HOST_MONITORING`).
 - All VMs are provisioned and configured by the IaC scripts in [`infrastructure/`](infrastructure/README.md).
 
 ---
@@ -133,13 +137,24 @@ Branch protection rules on `master` enforce that no direct pushes are allowed an
 
 ## Running Locally
 
-**Prerequisites:** Docker and Docker Compose. On **Windows** without Git Bash or WSL, replace `cp` with `copy`.
+**Prerequisites:** Docker and Docker Compose.
+- **Windows / macOS:** Install [Docker Desktop](https://www.docker.com/products/docker-desktop/)
+- **Linux:** Install Docker Engine + the `docker-compose-plugin` package
+
+On **Windows** without Git Bash or WSL, replace `cp` with `copy`.
+
+Run each step from the **repository root**. After each `cd`, return with `cd ..` before starting the next step.
 
 **1. Start the database**
 ```bash
 cd database
 cp .env.example .env   # fill in credentials
 docker compose up -d
+```
+
+Verify the database is ready before continuing:
+```bash
+docker compose logs postgres | grep "database system is ready to accept connections"
 ```
 
 **2. Start the application**
@@ -202,7 +217,7 @@ The database is seeded with four sample recipes on first startup if the `recipes
 Infrastructure is managed as code using bash scripts in [`infrastructure/`](infrastructure/README.md).
 
 - **`azure-setup.sh`** — provisions all four VMs, configures networking and firewall rules, installs Docker, and writes all GitHub Actions secrets automatically.
-- **`azure-teardown.sh`** — deletes the entire resource group and all associated resources.
+- **`azure-teardown.sh`** — deletes VMs, NICs, disks, NSGs, and the VNet from the `recipe-cookbook` resource group. The nginx public IP is deliberately preserved so it can be reused on the next setup.
 
 Every group member should be able to run the full setup → deploy → teardown cycle independently. See [`infrastructure/README.md`](infrastructure/README.md) for prerequisites and usage.
 
@@ -235,7 +250,7 @@ Prometheus scrapes metrics from the app every 15 seconds. Grafana visualises the
 | Environment | Prometheus | Grafana |
 |---|---|---|
 | Local | `http://localhost:9090` | `http://localhost:3001` |
-| Production | internal only | `http://<nginx-public-ip>/grafana/` — IP is the value of the `SSH_HOST_NGINX` secret, set by `azure-setup.sh` |
+| Production | internal only | `http://20.251.36.80/grafana/` |
 
 Metrics exposed at `/metrics`:
 
@@ -367,7 +382,7 @@ Only use this for WIP commits on a personal branch. All code must pass checks be
 - **Environment Parity:** The deployment uses the exact same configuration templates and scripts that will be used for production.
 
 ### 4. Observability & Operations
-- **Telemetry:** Logging, metrics, and distributed tracing are implemented following architectural standards.
+- **Telemetry:** Logging and metrics are implemented following architectural standards.
 
 ### 5. Product & Compliance
 - **Documentation:** User-facing documentation, API specs (e.g., Swagger/OpenAPI), and internal architecture diagrams are updated.
