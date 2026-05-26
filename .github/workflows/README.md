@@ -13,7 +13,7 @@ Runs on every push to any branch and on every pull request.
 | Step | Tool | Purpose |
 |---|---|---|
 | Static analysis | `go vet` | Catches common Go bugs (misused format strings, unreachable code, etc.) |
-| Tests + race detector | `go test -race` | Runs all unit tests and detects data races |
+| Tests + race detector | `go test -race` | Runs unit tests and integration tests (real Postgres service); detects data races |
 | Coverage threshold | `go tool cover` | Fails if total test coverage drops below 80% |
 | Vulnerability scan | `govulncheck` | Checks Go dependencies against the Go vulnerability database |
 | Dockerfile lint | `hadolint` | Enforces Dockerfile best practices |
