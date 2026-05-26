@@ -58,7 +58,7 @@ The application is deployed and running at the static public IP below.
 |---|---|---|
 | Azure CLI | Windows: `winget install Microsoft.AzureCLI`<br>macOS: `brew install azure-cli`<br>Linux (Ubuntu/Debian): `curl -sL https://aka.ms/InstallAzureCLIDeb &#124; sudo bash`<br>Other Linux: [install guide](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli-linux) | `az login` |
 | GitHub CLI | Windows: `winget install GitHub.cli`<br>macOS: `brew install gh`<br>Linux (Ubuntu/Debian): `sudo apt install gh`<br>Other Linux: [install guide](https://cli.github.com/) | `gh auth login --scopes read:packages` |
-| Azure subscription | Azure for Students works | quota for 4 × Standard_B2als_v2 VMs + 1 Standard public IP |
+| Azure subscription | Azure for Students works | quota for 4 × Standard_B1s VMs + 1 Standard public IP |
 | `openssl` | Pre-installed on macOS/Linux; included in Git Bash / WSL on Windows | — |
 | SSH key | Auto-generated at `~/.ssh/azure_key` if missing | — |
 
@@ -101,7 +101,7 @@ bash infrastructure/azure-teardown.sh
 | Reverse proxy | Nginx |
 | Monitoring | Prometheus + Grafana |
 | Container registry | GHCR |
-| Cloud | Azure (4 × Standard_B2als_v2 VMs) |
+| Cloud | Azure (4 × Standard_B1s VMs) |
 
 Go with `net/http` was chosen over the legacy Python/Flask stack for its performance and simplicity — it is compiled, statically typed, and the standard library HTTP server requires no external framework dependencies.
 

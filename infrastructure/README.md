@@ -8,8 +8,8 @@
 
 | Tool | Purpose | Install |
 |---|---|---|
-| [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli) | Create VMs | Windows: `winget install Microsoft.AzureCLI`<br>macOS: `brew install azure-cli`<br>Linux (Ubuntu/Debian): `curl -sL https://aka.ms/InstallAzureCLIDeb &#124; sudo bash`<br>Other Linux: [install guide](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli-linux) |
-| Azure subscription | Quota for 4 × Standard_B2als_v2 VMs + 1 Standard public IP | Azure for Students works |
+| [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli) | Create VMs | Windows: `winget install Microsoft.AzureCLI`<br>macOS: `brew install azure-cli`<br>Linux (Ubuntu/Debian): `curl -sL https://aka.ms/InstallAzureCLIDeb &#124; sudo bash`<br>Other Linux: [install guide](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli-linux) |
+| Azure subscription | Quota for 4 × Standard_B1s VMs + 1 Standard public IP | Azure for Students works |
 | `openssl` | Generate DB/Grafana passwords | Pre-installed on macOS/Linux; included in Git Bash / WSL on Windows |
 | SSH key at `~/.ssh/azure_key` | VM auth | Auto-generated if missing |
 | [GitHub CLI](https://cli.github.com/) | Set secrets automatically | Windows: `winget install GitHub.cli`<br>macOS: `brew install gh`<br>Linux (Ubuntu/Debian): `sudo apt install gh`<br>Other Linux: [install guide](https://cli.github.com/) |
@@ -28,8 +28,8 @@ gh auth login --scopes read:packages
 
 Run once to provision infrastructure and perform the initial container deployment. Subsequent deployments are handled by GitHub Actions on every push.
 
-1. Creates resource group `recipe-cookbook` and a shared VNet (`10.0.0.0/16`) in `norwayeast`
-2. Provisions four VMs (all `Standard_B2als_v2`, Ubuntu 22.04):
+1. Creates resource group `recipe-cookbook` and a shared VNet (`10.0.0.0/16`) in the selected region (see [Azure Region](#azure-region))
+2. Provisions four VMs (all `Standard_B1s`, Ubuntu 22.04):
    - **nginx VM** — public IP, ports 22/80 open (443 not configured — HTTPS not active)
    - **app VM** — no public IP, port 3000 reachable within VNet only
    - **postgres VM** — no public IP, port 5432 reachable from app VM only
@@ -65,7 +65,7 @@ The third case is the most common when using accounts with restricted quotas (e.
 az account list-locations --query "[].{Name:name, DisplayName:displayName}" --output table
 ```
 
-Pick any region from the `Name` column where you have quota for 4 × `Standard_B2als_v2` VMs and 1 Standard public IP. `Standard_B2als_v2` is available in virtually all regions — if a region appears in the list, it will almost certainly work.
+Pick any region from the `Name` column where you have quota for 4 × `Standard_B1s` VMs and 1 Standard public IP. `Standard_B1s` is available in virtually all regions — if a region appears in the list, it will almost certainly work.
 
 ## Usage
 
