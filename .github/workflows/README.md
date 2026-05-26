@@ -2,7 +2,7 @@
 
 ![CI/CD Pipeline](../../docs/cicd-pipeline.png)
 
-Two workflow files run automatically on every push.
+Two workflow files handle CI/CD. `ci.yml` runs on every push to every branch. `cd.yml` runs on pushes to `master` and on pull requests targeting `master`.
 
 ---
 
@@ -53,7 +53,7 @@ For each VM:
 1. Copies the service's `docker-compose.yaml` to `~/legacyProject/<service>/` via SCP. The monitoring VM also receives `prometheus.yml`.
 2. Assembles `~/legacyProject/<service>/.env` from individual secrets (`DB_HOST`, `DB_USER`, `DB_PASSWORD`, etc.) using `printf` — never echoed to logs.
 3. Pulls the new image and runs `docker compose up --wait`, blocking until all healthchecks pass within 60 seconds.
-4. On failure, rolls back to `:<image>:latest-stable` (the last confirmed-healthy image) for services with a custom image.
+4. On failure, rolls back to `<image>:latest-stable` (the last confirmed-healthy image) for services with a custom image.
 
 App, database, and monitoring VMs have no public IP and are reached via the network VM as a jump host (`SSH_PROXY_HOST`).
 
