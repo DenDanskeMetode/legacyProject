@@ -1,0 +1,44 @@
+**præsentations noter**
+How devops are you (Proces dokumentation) (sammeligning mellem før og efter)
+Application (vis frontend på public ip)
+    swagger/openAPI
+legacy
+    kort gennemgang samt hvor problemerne ligger
+    dependency graph
+http-stig (gnix -> goAPP)
+IaC 
+    Azure-setup og teardown med nice diagram
+    VM config 
+    azure portal
+public ip (generel network relateret features)
+    port regler, firewall
+    ssh keys, confic, tilgang til vms (jump)
+    rettighedder på vm's (r/w, vis basal shell komandoer i linux)
+Techstack (Golang, Postgresql)
+Monitorering
+    Hvorfor public
+    prometheus exportere
+    grafana dashboard
+    SLA
+Code quality
+    testing
+    linting
+    pre commit hooks
+Github
+    PR
+    Kanban/Issues
+    BranchRules 
+    branching strategi (vis git branch tree, trunck based branching)
+    Mappestruktur (monoRepo) -> Docker setup (pulle kun den del af repoet man har brug for, som ikke nået)
+    Workflow
+        secrets/env-var
+        GHCR
+        jobs
+    Readme.md
+        defenition of done (kort!)
+    Demo!!
+        husk discord
+Fredadrettet
+    qubernetties
+    blue/green
+    andet
