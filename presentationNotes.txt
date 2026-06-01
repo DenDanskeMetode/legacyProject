@@ -1,44 +1,43 @@
 **præsentations noter**
-How devops are you (Proces dokumentation) (sammeligning mellem før og efter)
-Application (vis frontend på public ip)
+How devops are you (Proces dokumentation) (sammeligning mellem før og efter) *2 min - Felix
+Application (vis frontend på public ip) *2 min - Felix
     swagger/openAPI
-legacy
+legacy  *2 min - Felix
     kort gennemgang samt hvor problemerne ligger
     dependency graph
-http-stig (gnix -> goAPP)
-IaC 
+IaC *3 min - Nicholas
+    http-stig (gnix -> goAPP)
     Azure-setup og teardown med nice diagram
-    VM config 
     azure portal
-public ip (generel network relateret features)
+public ip (generel network relateret features)  *3 min - Victor
     port regler, firewall
     ssh keys, confic, tilgang til vms (jump)
     rettighedder på vm's (r/w, vis basal shell komandoer i linux)
-Techstack (Golang, Postgresql)
-Monitorering
+Techstack (Golang, Postgresql)  *1 min - Christian
+Monitorering    *4 min - Christian
     Hvorfor public
     prometheus exportere
     grafana dashboard
     SLA
-Code quality
+Code quality    *2 min - Christian
     testing
     linting
     pre commit hooks
-Github
-    PR
-    Kanban/Issues
-    BranchRules 
-    branching strategi (vis git branch tree, trunck based branching)
-    Mappestruktur (monoRepo) -> Docker setup (pulle kun den del af repoet man har brug for, som ikke nået)
-    Workflow
+Github  *10 min
+    PR  *½ min - Felix
+    Kanban/Issues   *½ min - Felix
+    BranchRules     *½ min - Felix
+    branching strategi (vis git branch tree, trunck based branching)    *½ min - Felix
+    Mappestruktur (monoRepo) -> Docker setup (pulle kun den del af repoet man har brug for, som ikke nået)  *1 min - Felix
+    Workflow    *4 min - Nicholas
         secrets/env-var
         GHCR
         jobs
-    Readme.md
-        defenition of done (kort!)
-    Demo!!
+    Readme.md   *½ min - Victor
+        defenition of done (så kort som muligt!)
+    Demo!!  *5 min - Victor
         husk discord
-Fredadrettet
+Fremadrettet    *1 min - Nicholas
     qubernetties
     blue/green
     andet
