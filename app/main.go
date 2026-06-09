@@ -15,6 +15,8 @@ import (
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
+var hej ="hej"
+
 // httpRequestsTotal counts HTTP requests by method/path/status.
 var httpRequestsTotal = prometheus.NewCounterVec(
 	prometheus.CounterOpts{
